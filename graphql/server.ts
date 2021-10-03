@@ -2,6 +2,8 @@ import {ApolloServer, gql} from 'apollo-server-micro'
 import * as resolvers from './resolvers'
 
 const typeDefs = gql`
+  scalar Timestamp
+
   type Project {
     id: Int!
     name: String!
@@ -19,9 +21,22 @@ const typeDefs = gql`
     projects: [Project!]!
   }
 
+  type Feed {
+    id: Int!
+    type: String!
+    fellowship: String
+    name: String!
+    description: String!
+    image_url: String
+    created_ts: Timestamp!
+  }
+
   type Query {
     project(id: Int!): Project!
     user(id: Int!): User!
+    foundersFeed: [Feed!]!
+    angelsFeed: [Feed!]!
+    writersFeed: [Feed!]!
   }
 `;
 
