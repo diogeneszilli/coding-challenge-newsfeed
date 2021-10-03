@@ -4,8 +4,8 @@ import FeedCard from 'components/FeedCard'
 import Feed from 'components/Feed'
 
 const ANGELS_FEED_QUERY = gql`
-  query angelsFeed {
-    angelsFeed {
+  query angelsFeed($limit: Int!, $offset: Int!) {
+    angelsFeed(limit: $limit, offset: $offset) {
       id
       type
       fellowship
@@ -21,6 +21,11 @@ type QueryData = {
   angelsFeed: Feed[];
 }
 
+type QueryVars = {
+  limit: number;
+  offset: number;
+}
+
 type Feed = {
   id: number;
   type: "user" | "project" | "announcement"
@@ -31,20 +36,30 @@ type Feed = {
   created_ts: Date;
 }
 
-export default function AngelsFeedPage() {
-  const {data, error, loading} = useQuery<QueryData>(ANGELS_FEED_QUERY)
-  const angelsFeed = data?.angelsFeed;
+let feed: any[] = [];
+const offset = 0;
+const limit = 10;
 
-  if (!angelsFeed || loading || error) {
+export default function AngelsFeedPage() {
+  const {data, error, loading} = useQuery<QueryData, QueryVars>(
+    ANGELS_FEED_QUERY,
+    {
+      variables: {limit, offset},
+    }
+  )
+  const angelsFeed = data?.angelsFeed || [];
+  feed = [...angelsFeed];
+
+  if (!feed || loading || error) {
     return null
   }
 
   return (
     <Layout>
-      {angelsFeed.map((item, index) => {
+      {feed.map((item, index) => {
         return (
-          <Feed>
-            <FeedCard key={index} feed={item} />
+          <Feed key={index}>
+            <FeedCard feed={item} />
           </Feed>
         )
       })}
