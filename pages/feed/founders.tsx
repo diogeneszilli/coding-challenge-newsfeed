@@ -4,8 +4,8 @@ import FeedCard from 'components/FeedCard'
 import Feed from 'components/Feed'
 
 const FOUNDERS_FEED_QUERY = gql`
-  query foundersFeed {
-    foundersFeed {
+  query foundersFeed($limit: Int!, $offset: Int!) {
+    foundersFeed(limit: $limit, offset: $offset) {
       id
       type
       fellowship
@@ -21,6 +21,11 @@ type QueryData = {
   foundersFeed: Feed[];
 }
 
+type QueryVars = {
+  limit: number;
+  offset: number;
+}
+
 type Feed = {
   id: number;
   type: "user" | "project" | "announcement"
@@ -31,20 +36,30 @@ type Feed = {
   created_ts: Date;
 }
 
-export default function FoundersFeedPage() {
-  const {data, error, loading} = useQuery<QueryData>(FOUNDERS_FEED_QUERY)
-  const foundersFeed = data?.foundersFeed;
+let feed: any[] = [];
+const offset = 0;
+const limit = 10;
 
-  if (!foundersFeed || loading || error) {
+export default function FoundersFeedPage() {
+  const {data, error, loading} = useQuery<QueryData, QueryVars>(
+    FOUNDERS_FEED_QUERY,
+    {
+      variables: {limit, offset},
+    }
+  )
+  const foundersFeed = data?.foundersFeed || [];
+  feed = [...foundersFeed];
+
+  if (!feed || loading || error) {
     return null
   }
 
   return (
     <Layout>
-      {foundersFeed.map((item, index) => {
+      {feed.map((item, index) => {
         return (
-          <Feed>
-            <FeedCard key={index} feed={item} />
+          <Feed key={index}>
+            <FeedCard feed={item} />
           </Feed>
         )
       })}
