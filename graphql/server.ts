@@ -34,9 +34,9 @@ const typeDefs = gql`
   type Query {
     project(id: Int!): Project!
     user(id: Int!): User!
-    foundersFeed: [Feed!]!
-    angelsFeed: [Feed!]!
-    writersFeed: [Feed!]!
+    foundersFeed(limit: Int!, offset: Int!): [Feed!]!
+    angelsFeed(limit: Int!, offset: Int!): [Feed!]!
+    writersFeed(limit: Int!, offset: Int!): [Feed!]!
   }
 `;
 
