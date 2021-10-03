@@ -1,6 +1,12 @@
 import db, {FeedRow} from '../../../db'
 
-export default async function writersFeed(): Promise<FeedRow[]> {
+type Args = {
+  limit: number;
+  offset: number;
+}
+
+export default async function writersFeed(parent: unknown, {limit, offset}: Args): Promise<FeedRow[]> {
+  const begin = offset * limit;
   const feed: FeedRow[] = await db.getAll(
     `
     SELECT * FROM (
@@ -10,8 +16,10 @@ export default async function writersFeed(): Promise<FeedRow[]> {
       SELECT announcements.id, "announcement" AS type, announcements.fellowship, announcements.title AS name, announcements.body AS description, NULL AS image_url, announcements.created_ts FROM announcements
         WHERE announcements.fellowship = "all" OR announcements.fellowship = "writers"
     ) AS result
-    ORDER BY result.created_ts DESC;
-    `
+    ORDER BY result.created_ts DESC
+    LIMIT ?,?;
+    `,
+    [begin, limit]
   )
   return feed;
 }
