@@ -8,10 +8,13 @@ export default function Home() {
       <Head>
         <title>On Deck Newsfeed</title>
       </Head>
-      <h1>Hello there!</h1>
-      <p>Your future newsfeed goes to this page. Or not, you decide 🤷</p>
+      <h1>Be On Deck</h1>
+      <p>Checkout the newsfeed for founders, angels and writers. Or not, you decide 🤷</p>
       <span>Check out these pages:</span>
       <ul>
+        <li><Link href="/feed/founders">Founders Feed</Link></li>
+        <li><Link href="/feed/angels">Angels Feed</Link></li>
+        <li><Link href="/feed/writers">Writers Feed</Link></li>
         <li>Project <Link href="/projects/10">Blue Onion Labs</Link></li>
         <li>User <Link href="/users/11">Cai Burris</Link></li>
       </ul>
