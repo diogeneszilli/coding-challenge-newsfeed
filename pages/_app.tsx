@@ -1,4 +1,5 @@
 import {ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client'
+import { offsetLimitPagination } from '@apollo/client/utilities'
 import {createGlobalStyle, ThemeProvider} from 'styled-components'
 import type { AppProps } from 'next/app'
 
@@ -15,9 +16,39 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   )
 }
 
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        angelsFeed: {
+          keyArgs: false,
+          merge(existing = [], incoming) {
+            const merged = [...existing, ...incoming];
+            return merged;
+          },
+        },
+        foundersFeed: {
+          keyArgs: false,
+          merge(existing = [], incoming) {
+            const merged = [...existing, ...incoming];
+            return merged;
+          },
+        },
+        writersFeed: {
+          keyArgs: false,
+          merge(existing = [], incoming) {
+            const merged = [...existing, ...incoming];
+            return merged;
+          },
+        }
+      }
+    }
+  }
+})
+
 const client = new ApolloClient({
   uri: '/api/graphql',
-  cache: new InMemoryCache(),
+  cache: cache,
 })
 
 const theme = {
