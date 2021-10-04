@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import Card from './Card'
 import Markdown from './Markdown'
+import Link from 'next/link';
 import { Feed } from '../graphql/types/feed'
 
 type Props = {
@@ -34,9 +35,21 @@ function renderTitle(feed: Feed) {
     return (
       <div>
         <h2>New {renderFellowship(feed.fellowship)}</h2>
-        <h3>{feed.name}</h3>
+        <h3>
+          <Link href={`/users/${feed.tableId}`}>{feed.name}</Link>
+        </h3>
       </div>
     )
+  }
+  if (feed.type === 'project') {
+    return (
+      <div>
+        <h2>New {feed.type.charAt(0).toUpperCase() + feed.type.slice(1)}</h2>
+        <h3>
+          <Link href={`/projects/${feed.tableId}`}>{feed.name}</Link>
+        </h3>
+      </div>
+    );
   }
   return (
     <div>
