@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import {useQuery, gql} from '@apollo/client'
 import { useRouter } from 'next/router'
 import Layout from 'components/Layout'
@@ -6,10 +7,10 @@ import FeedLayout from 'components/FeedLayout'
 import HomeLink from 'components/HomeLink'
 import { Feed, QueryVarsPagination } from 'graphql/types/feed'
 
-const limit = 10;
-let offset = 0;
-
 export default function FeedPage() {
+  const [offset, setOffset] = useState(0);
+  const limit = 10;
+
   const {query} = useRouter();
   const feedName = query.fellowshipFeed;
 
@@ -45,8 +46,9 @@ export default function FeedPage() {
     if (hasMore) {
       const isBottom = window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight;
       if(isBottom) {
-        offset += 1;
-        fetchMore({variables: { limit, offset }});
+        const updatedOffset = offset + 1;
+        fetchMore({variables: { limit, offset: updatedOffset }});
+        setOffset(updatedOffset);
       }
     }
   }
