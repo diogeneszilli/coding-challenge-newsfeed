@@ -13,15 +13,3 @@ export type QueryVarsPagination = {
     limit: number;
     offset: number;
   }
-
-export type QueryDataFounder = {
-    foundersFeed: Feed[];
-  }
-
-export type QueryDataAngel = {
-    angelsFeed: Feed[];
-  }
-
-export type QueryDataWriter = {
-    writersFeed: Feed[];
-  }
