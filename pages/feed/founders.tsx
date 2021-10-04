@@ -2,7 +2,7 @@ import {useQuery, gql} from '@apollo/client'
 import Layout from 'components/Layout'
 import FeedCard from 'components/FeedCard'
 import FeedLayout from 'components/FeedLayout'
-import { QueryDataFounder, QueryVars } from '../../graphql/types'
+import { QueryDataFounder, QueryVarsPagination } from '../../graphql/types/feed'
 
 
 const FOUNDERS_FEED_QUERY = gql`
@@ -24,7 +24,7 @@ const limit = 10;
 let offset = 0;
 
 export default function FoundersFeedPage() {
-  const {data, error, loading, fetchMore} = useQuery<QueryDataFounder, QueryVars>(
+  const {data, error, loading, fetchMore} = useQuery<QueryDataFounder, QueryVarsPagination>(
     FOUNDERS_FEED_QUERY, { variables: {limit, offset}}
   )
 

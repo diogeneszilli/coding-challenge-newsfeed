@@ -2,7 +2,7 @@ import {useQuery, gql} from '@apollo/client'
 import Layout from 'components/Layout'
 import FeedCard from 'components/FeedCard'
 import FeedLayout from 'components/FeedLayout'
-import { QueryDataWriter, QueryVars } from '../../graphql/types'
+import { QueryDataWriter, QueryVarsPagination } from '../../graphql/types/feed'
 
 const WRITERS_FEED_QUERY = gql`
   query writersFeed($limit: Int!, $offset: Int!) {
@@ -23,7 +23,7 @@ const limit = 10;
 let offset = 0;
 
 export default function WritersFeedPage() {
-  const {data, error, loading, fetchMore} = useQuery<QueryDataWriter, QueryVars>(
+  const {data, error, loading, fetchMore} = useQuery<QueryDataWriter, QueryVarsPagination>(
     WRITERS_FEED_QUERY, {variables: {limit, offset}}
   );
   

@@ -9,7 +9,7 @@ export type Feed = {
     created_ts: Date;
   }
 
-export type QueryVars = {
+export type QueryVarsPagination = {
     limit: number;
     offset: number;
   }

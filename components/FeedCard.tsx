@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import Card from './Card'
 import Markdown from './Markdown'
-import { Feed } from '../graphql/types'
+import { Feed } from '../graphql/types/feed'
 
 type Props = {
   feed: Feed;

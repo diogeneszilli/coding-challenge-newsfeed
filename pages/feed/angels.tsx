@@ -2,7 +2,7 @@ import {useQuery, gql} from '@apollo/client'
 import Layout from 'components/Layout'
 import FeedCard from 'components/FeedCard'
 import FeedLayout from 'components/FeedLayout'
-import { QueryDataAngel, QueryVars } from '../../graphql/types'
+import { QueryDataAngel, QueryVarsPagination } from '../../graphql/types/feed'
 
 
 const ANGELS_FEED_QUERY = gql`
@@ -24,7 +24,7 @@ const limit = 10;
 let offset = 0;
 
 export default function AngelsFeedPage() {
-  const { data, error, loading, fetchMore } = useQuery<QueryDataAngel, QueryVars>(
+  const { data, error, loading, fetchMore } = useQuery<QueryDataAngel, QueryVarsPagination>(
     ANGELS_FEED_QUERY, { variables: { limit, offset }}
   )
 
