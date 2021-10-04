@@ -7,6 +7,7 @@ const FOUNDERS_FEED_QUERY = gql`
   query foundersFeed($limit: Int!, $offset: Int!) {
     foundersFeed(limit: $limit, offset: $offset) {
       id
+      tableId
       type
       fellowship
       name
@@ -28,6 +29,7 @@ type QueryVars = {
 
 type Feed = {
   id: number;
+  tableId: number;
   type: "user" | "project" | "announcement"
   fellowship: "founders" | "angels" | "writers" | "all";
   name: string;
@@ -36,30 +38,35 @@ type Feed = {
   created_ts: Date;
 }
 
-let feed: any[] = [];
-const offset = 0;
 const limit = 10;
+let offset = 0;
 
 export default function FoundersFeedPage() {
-  const {data, error, loading} = useQuery<QueryData, QueryVars>(
-    FOUNDERS_FEED_QUERY,
-    {
-      variables: {limit, offset},
-    }
+  const {data, error, loading, fetchMore} = useQuery<QueryData, QueryVars>(
+    FOUNDERS_FEED_QUERY, { variables: {limit, offset}}
   )
-  const foundersFeed = data?.foundersFeed || [];
-  feed = [...foundersFeed];
 
-  if (!feed || loading || error) {
+  if (!data?.foundersFeed || loading || error) {
     return null
+  }
+
+  window.onscroll = () => {
+    const hasMore = data?.foundersFeed.length % 10 === 0;
+    if (hasMore) {
+      const isBottom = window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight;
+      if(isBottom) {
+        offset += 1;
+        fetchMore({variables: { limit, offset }});
+      }
+    }
   }
 
   return (
     <Layout>
-      {feed.map((item, index) => {
+      {data?.foundersFeed.map(feed => {
         return (
-          <Feed key={index}>
-            <FeedCard feed={item} />
+          <Feed key={feed.id}>
+            <FeedCard feed={feed} />
           </Feed>
         )
       })}
