@@ -64,6 +64,7 @@ export type AnnouncementRow = {
 
 export type FeedRow = {
   id: number;
+  tableId: number;
   type: "user" | "project" | "announcement";
   fellowship: "founders" | "angels" | "writers" | "all";
   name: string;

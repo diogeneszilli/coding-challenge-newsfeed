@@ -23,6 +23,7 @@ const typeDefs = gql`
 
   type Feed {
     id: Int!
+    tableId: Int!
     type: String!
     fellowship: String
     name: String!
