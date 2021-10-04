@@ -1,14 +1,21 @@
 import {useQuery, gql} from '@apollo/client'
+import { useRouter } from 'next/router'
 import Layout from 'components/Layout'
 import FeedCard from 'components/FeedCard'
 import FeedLayout from 'components/FeedLayout'
-import HomeLink from 'components/HomeLink';
-import { QueryDataFounder, QueryVarsPagination } from '../../graphql/types/feed'
+import HomeLink from 'components/HomeLink'
+import { Feed, QueryVarsPagination } from 'graphql/types/feed'
 
+const limit = 10;
+let offset = 0;
 
-const FOUNDERS_FEED_QUERY = gql`
-  query foundersFeed($limit: Int!, $offset: Int!) {
-    foundersFeed(limit: $limit, offset: $offset) {
+export default function FeedPage() {
+  const {query} = useRouter();
+  const feedName = query.fellowshipFeed;
+
+  const FEED_QUERY = gql`
+  query ${feedName}($limit: Int!, $offset: Int!) {
+    ${feedName}(limit: $limit, offset: $offset) {
       id
       tableId
       type
@@ -19,22 +26,22 @@ const FOUNDERS_FEED_QUERY = gql`
       created_ts
     }
   }
-`
+  `
 
-const limit = 10;
-let offset = 0;
+  type QueryData = {
+    [feedName: string]: Feed[]
+  }
 
-export default function FoundersFeedPage() {
-  const {data, error, loading, fetchMore} = useQuery<QueryDataFounder, QueryVarsPagination>(
-    FOUNDERS_FEED_QUERY, { variables: {limit, offset}}
+  const { data, error, loading, fetchMore } = useQuery<QueryData, QueryVarsPagination>(
+    FEED_QUERY, { variables: { limit, offset }}
   )
 
-  if (!data?.foundersFeed || loading || error) {
+  if (!data?.[`${feedName}`] || loading || error) {
     return null
   }
 
   window.onscroll = () => {
-    const hasMore = data?.foundersFeed.length % 10 === 0;
+    const hasMore = data?.[`${feedName}`].length % 10 === 0;
     if (hasMore) {
       const isBottom = window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight;
       if(isBottom) {
@@ -47,7 +54,7 @@ export default function FoundersFeedPage() {
   return (
     <Layout>
       <HomeLink />
-      {data?.foundersFeed.map(feed => {
+      {data?.[`${feedName}`].map(feed => {
         return (
           <FeedLayout key={feed.id}>
             <FeedCard feed={feed} />
