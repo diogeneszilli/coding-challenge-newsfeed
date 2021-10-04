@@ -2,7 +2,8 @@ import {useQuery, gql} from '@apollo/client'
 import Layout from 'components/Layout'
 import FeedCard from 'components/FeedCard'
 import FeedLayout from 'components/FeedLayout'
-import { QueryDataAngel, QueryVarsPagination } from '../../graphql/types/feed'
+import HomeLink from 'components/HomeLink'
+import { QueryDataAngel, QueryVarsPagination } from 'graphql/types/feed'
 
 
 const ANGELS_FEED_QUERY = gql`
@@ -45,6 +46,7 @@ export default function AngelsFeedPage() {
 
   return (
     <Layout>
+      <HomeLink />
       {data?.angelsFeed.map(feed => {
         return (
           <FeedLayout key={feed.id}>

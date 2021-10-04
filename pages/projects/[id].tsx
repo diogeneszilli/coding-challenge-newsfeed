@@ -2,6 +2,7 @@ import {useRouter} from 'next/router'
 import {useQuery, gql} from '@apollo/client'
 import Layout from 'components/Layout'
 import ProjectCard from 'components/ProjectCard'
+import HomeLink from 'components/HomeLink'
 import { QueryDataProject, QueryVarsId } from 'graphql/types/project'
 
 const PROJECT_QUERY = gql`
@@ -38,6 +39,7 @@ export default function ProjectPage() {
 
   return (
     <Layout>
+      <HomeLink />
       <ProjectCard project={project} />
     </Layout>
   )

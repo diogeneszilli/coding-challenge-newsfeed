@@ -2,6 +2,7 @@ import {useQuery, gql} from '@apollo/client'
 import Layout from 'components/Layout'
 import FeedCard from 'components/FeedCard'
 import FeedLayout from 'components/FeedLayout'
+import HomeLink from 'components/HomeLink';
 import { QueryDataFounder, QueryVarsPagination } from '../../graphql/types/feed'
 
 
@@ -45,6 +46,7 @@ export default function FoundersFeedPage() {
 
   return (
     <Layout>
+      <HomeLink />
       {data?.foundersFeed.map(feed => {
         return (
           <FeedLayout key={feed.id}>

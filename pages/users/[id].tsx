@@ -2,6 +2,7 @@ import {useRouter} from 'next/router'
 import {useQuery, gql} from '@apollo/client'
 import Layout from 'components/Layout'
 import UserCard from 'components/UserCard'
+import HomeLink from 'components/HomeLink'
 import { QueryDataUser, QueryVarsId } from 'graphql/types/user'
 
 const USER_QUERY = gql`
@@ -39,6 +40,7 @@ export default function UserPage() {
 
   return (
     <Layout>
+      <HomeLink />
       <UserCard user={user} />
     </Layout>
   )

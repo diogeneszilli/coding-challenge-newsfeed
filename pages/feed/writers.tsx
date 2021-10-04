@@ -2,7 +2,8 @@ import {useQuery, gql} from '@apollo/client'
 import Layout from 'components/Layout'
 import FeedCard from 'components/FeedCard'
 import FeedLayout from 'components/FeedLayout'
-import { QueryDataWriter, QueryVarsPagination } from '../../graphql/types/feed'
+import { QueryDataWriter, QueryVarsPagination } from 'graphql/types/feed'
+import HomeLink from 'components/HomeLink'
 
 const WRITERS_FEED_QUERY = gql`
   query writersFeed($limit: Int!, $offset: Int!) {
@@ -44,6 +45,7 @@ export default function WritersFeedPage() {
 
   return (
     <Layout>
+      <HomeLink />
       {data?.writersFeed.map(feed => {
         return (
           <FeedLayout key={feed.id}>
