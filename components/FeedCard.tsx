@@ -1,19 +1,10 @@
 import styled from 'styled-components'
 import Card from './Card'
 import Markdown from './Markdown'
+import { Feed } from '../graphql/types'
 
 type Props = {
   feed: Feed;
-}
-
-type Feed = {
-  id: number;
-  type: "user" | "project" | "announcement"
-  fellowship: "founders" | "angels" | "writers" | "all";
-  name: string;
-  description: string;
-  image_url: string;
-  created_ts: Date;
 }
 
 function renderImage(image_url: string) {

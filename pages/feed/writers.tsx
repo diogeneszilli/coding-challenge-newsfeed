@@ -1,7 +1,8 @@
 import {useQuery, gql} from '@apollo/client'
 import Layout from 'components/Layout'
 import FeedCard from 'components/FeedCard'
-import Feed from 'components/Feed'
+import FeedLayout from 'components/FeedLayout'
+import { QueryDataWriter, QueryVars } from '../../graphql/types'
 
 const WRITERS_FEED_QUERY = gql`
   query writersFeed($limit: Int!, $offset: Int!) {
@@ -18,31 +19,11 @@ const WRITERS_FEED_QUERY = gql`
   }
 `
 
-type QueryData = {
-  writersFeed: Feed[];
-}
-
-type QueryVars = {
-  limit: number;
-  offset: number;
-}
-
-type Feed = {
-  id: number;
-  tableId: number;
-  type: "user" | "project" | "announcement"
-  fellowship: "founders" | "angels" | "writers" | "all";
-  name: string;
-  description: string;
-  image_url: string;
-  created_ts: Date;
-}
-
 const limit = 10;
 let offset = 0;
 
 export default function WritersFeedPage() {
-  const {data, error, loading, fetchMore} = useQuery<QueryData, QueryVars>(
+  const {data, error, loading, fetchMore} = useQuery<QueryDataWriter, QueryVars>(
     WRITERS_FEED_QUERY, {variables: {limit, offset}}
   );
   
@@ -65,9 +46,9 @@ export default function WritersFeedPage() {
     <Layout>
       {data?.writersFeed.map(feed => {
         return (
-          <Feed key={feed.id}>
+          <FeedLayout key={feed.id}>
             <FeedCard feed={feed} />
-          </Feed>
+          </FeedLayout>
         )
       })}
     </Layout>
